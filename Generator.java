@@ -93,7 +93,7 @@ class Generator{
 			packet.setLength(0);
 			socket.send(packet);
 			}
-
+			
 			System.out.println("End sending");
 			System.out.println("Saving data");
 
