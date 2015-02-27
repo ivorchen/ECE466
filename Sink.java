@@ -41,7 +41,7 @@ class Sink {
 			int end=seq_num;
 			seq_num = 0;
 			pout.println("SeqNo\tTime interval(in usec)\tSize(in Bytes)");
-			while (seq_num <= end){
+			while (seq_num < end){
 				pout.println((seq_num+1) + "\t\t" + Ftime_buf[seq_num]/1000 + "\t\t"+ Fsize_buf[seq_num]);
 				seq_num +=1;
 			}

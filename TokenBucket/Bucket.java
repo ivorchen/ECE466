@@ -19,7 +19,7 @@ public class Bucket implements Runnable
 	// number of data points
 	private final int dp=10000;
 	// array to store the elapsed time
-	long[] Ftime_buf=new long[dp];
+	//long[] Ftime_buf=new long[dp];
 	// array to store data for X
 	long[] X_buf=new long[dp];
 	// array to store data for L
@@ -47,8 +47,8 @@ public class Bucket implements Runnable
 		// when started there are size tokens, and starting time is last update time for
 		// this number of tokens
 		lastTime = System.nanoTime();
-		Ftime_buf[0]=0;
-		System.out.println(0+"\t"+noTokens+"\t"+Ftime_buf[0]);
+		//Ftime_buf[0]=0;
+		//System.out.println(0+"\t"+noTokens+"\t"+Ftime_buf[0]);
 	}
 	
 	/**
@@ -69,12 +69,14 @@ public class Bucket implements Runnable
 
 		//current time
 		long currentTime=System.nanoTime();
-		Ftime_buf[index]=currentTime-lastTime;
-		int generatedTokens=(int)(Ftime_buf[index]/tokenInterval);
-		Ftime_buf[index]/=1000;
+		//Ftime_buf[index]=currentTime-lastTime;
+		
+		long tmp=currentTime-lastTime;
+		int generatedTokens=(int)(tmp/tokenInterval);
+		//Ftime_buf[index]/=1000;
 		noTokens+=generatedTokens;
 		if(noTokens>size)noTokens=size;
-		System.out.println(index+"\t"+noTokens+"\t"+Ftime_buf[index]);
+		//System.out.println(index+"\t"+noTokens+"\t"+Ftime_buf[index]);
 		index++;
 		lastTime=currentTime;
 	}
@@ -124,7 +126,7 @@ public class Bucket implements Runnable
 		// In Lab 2B, you  add the code that sets the correct  time until the bucket 
 		// contains the required number  tokensToWaitFor tokens 
 		if(noTokens<tokensToWaitFor){
-		return (noTokens-tokensToWaitFor)*tokenInterval;
+		return (tokensToWaitFor-noTokens)*tokenInterval;
 		}
 
 		return (0);
