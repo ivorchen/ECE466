@@ -16,8 +16,8 @@ class Sink {
 		
 		try {  
 			
-			DatagramSocket socket = new DatagramSocket(4444);
-			System.out.println("Sink using port 4444");
+			DatagramSocket socket = new DatagramSocket(4445);
+			System.out.println("Sink using port 4445");
 			
 			byte[] buf = new byte[2000];
 			DatagramPacket p = new DatagramPacket(buf, buf.length); 

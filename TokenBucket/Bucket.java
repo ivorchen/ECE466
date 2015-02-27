@@ -16,6 +16,16 @@ public class Bucket implements Runnable
 	// number of tokens in bucket (at last update)
 	// NOTE: this variable should never be used without previous call to updatNoTokens()
 	private int noTokens;
+	// number of data points
+	private final int dp=10000;
+	// array to store the elapsed time
+	long[] Ftime_buf=new long[dp];
+	// array to store data for X
+	long[] X_buf=new long[dp];
+	// array to store data for L
+	long[] L_buf=new long[dp];
+	// current data point
+	int index=1;
 	
 	/**
 	 * Constructor.
@@ -37,6 +47,8 @@ public class Bucket implements Runnable
 		// when started there are size tokens, and starting time is last update time for
 		// this number of tokens
 		lastTime = System.nanoTime();
+		Ftime_buf[0]=0;
+		System.out.println(0+"\t"+noTokens+"\t"+Ftime_buf[0]);
 	}
 	
 	/**
@@ -54,6 +66,17 @@ public class Bucket implements Runnable
 		//        and update the variable "lastTime" 
 		//     2. Update the variable noTokens, which stores the updated content of the token bucket
 		//
+
+		//current time
+		long currentTime=System.nanoTime();
+		Ftime_buf[index]=currentTime-lastTime;
+		int generatedTokens=(int)(Ftime_buf[index]/tokenInterval);
+		Ftime_buf[index]/=1000;
+		noTokens+=generatedTokens;
+		if(noTokens>size)noTokens=size;
+		System.out.println(index+"\t"+noTokens+"\t"+Ftime_buf[index]);
+		index++;
+		lastTime=currentTime;
 	}
 	
 	/**
@@ -78,7 +101,10 @@ public class Bucket implements Runnable
 		// Currently this code segment is empty. 
 		//
 		// In Lab 2B, you  add the code that removes the required number of tokens 
-		// and returns false if there are not enough tokens. 	
+		// and returns false if there are not enough tokens.
+		if(noTokens<noToRemove)
+		return false;
+		noTokens=noTokens-noToRemove;
 		return true;
 	}
 	
@@ -97,6 +123,9 @@ public class Bucket implements Runnable
 		//
 		// In Lab 2B, you  add the code that sets the correct  time until the bucket 
 		// contains the required number  tokensToWaitFor tokens 
+		if(noTokens<tokensToWaitFor){
+		return (noTokens-tokensToWaitFor)*tokenInterval;
+		}
 
 		return (0);
 	}
